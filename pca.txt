@@ -1,0 +1,27 @@
+# 主成分分析
+pca <- function(dat)                                    # データ行列
+{
+        dat <- subset(dat, complete.cases(dat))         # 欠損値を持つケースを除く
+        nr <- nrow(dat)                                 # サンプルサイズ
+        nc <- ncol(dat)                                 # 変数の個数
+        heikin <- colMeans(dat)                         # 各変数の平均値
+        bunsan <- apply(dat, 2, var)                    # 各変数の不偏分散
+        sd <- sqrt(bunsan)                              # 各変数の標準偏差
+        r <-cor(dat)                                    # 相関係数行列
+        result <- eigen(r)                              # 固有値・固有ベクトルを求める
+        eval <- result$values                           # 固有値
+        evec <- result$vectors                          # 固有ベクトル
+        contr <- eval/nc*100                            # 寄与率（％）
+        cum.contr <- cumsum(contr)                      # 累積寄与率（％）
+        fl <- t(sqrt(eval)*t(evec))                     # 主成分負荷量
+        fs <- scale(dat)%*%evec*sqrt(nr/(nr-1))         # 主成分得点
+        if (is.null(colnames(dat))) colnames(dat) <- paste("Var", 1:nc, sep="-")
+        if (is.null(rownames(dat))) rownames(dat) <- paste("Case", 1:nr, sep="-")
+        names(heikin) <- names(bunsan) <- names(sd) <- rownames(r) <- colnames(r) <- rownames(fl) <- colnames(dat)
+        names(eval) <- names(contr) <- names(cum.contr) <- colnames(fl) <- colnames(fs) <- paste("PC", 1:nc, sep="")
+        invisible(list(mean=heikin, variance=bunsan,
+                        standard.deviation=sd, r=r,
+                        factor.loadings=fl, eval=eval,
+                        contribution=contr,
+                        cum.contribution=cum.contr, fs=fs))
+}
