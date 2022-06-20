@@ -5,23 +5,23 @@ databar <- t(datasum)
 source("pca.txt")
 result_s <- pca(datasum[, -c(1,19)])
 
-# 平均値（mean）
+## 平均値（mean）
 write.csv(result_s$mean, "mean.csv")
-# 不偏分散値（variance）
+## 不偏分散値（variance）
 write.csv(result_s$variance, "variance.csv")
-# 標準偏差（standard deviation）
+## 標準偏差（standard deviation）
 write.csv(result_s$standard.deviation, "standard.deviation.csv")
-# 相関係数行列
+## 相関係数行列
 write.csv(result_s$r, "r.csv")
-# 固有値
+## 固有値
 write.csv(result_s$eval, "eval.csv")
-# 寄与率
+## 寄与率
 write.csv(result_s$contribution, "contribution.csv")
-# 累積寄与率
+## 累積寄与率
 write.csv(result_s$cum.contribution, "cum.contribution.csv")
-# 主成分負荷量
+## 主成分負荷量
 write.csv(result_s$factor.loadings, "factor.loadings.csv")
-# 主成分得点
+## 主成分得点
 write.csv(result_s$fs, "fs.csv")
 
 source("mreg.txt", encoding = "utf-8")
